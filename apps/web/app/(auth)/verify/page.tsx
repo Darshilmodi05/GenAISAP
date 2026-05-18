@@ -9,7 +9,9 @@ import { Avatar } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { Shield, ArrowLeft, RefreshCw, Key, Monitor, CheckCircle2 } from 'lucide-react';
 
-export default function VerifyPage() {
+import { Suspense } from 'react';
+
+function VerifyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || 'EXECUTIVE@SYSTEM.CORP';
@@ -286,5 +288,13 @@ export default function VerifyPage() {
       </div>
 
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen w-full flex items-center justify-center bg-[#030305] text-white">Loading Security Matrix...</div>}>
+      <VerifyContent />
+    </Suspense>
   );
 }

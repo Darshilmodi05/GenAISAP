@@ -68,3 +68,5 @@ next-env.d.ts
 
 # ─── Temp scripts ────────────────────────────────────────────
 fix-supabase-client.js
+
+.vercel
