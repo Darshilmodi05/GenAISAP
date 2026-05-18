@@ -1,0 +1,126 @@
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  darkMode: ['class'],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background: 'var(--background)',
+        surface: 'var(--surface)',
+        'surface-elevated': 'var(--surface-elevated)',
+        'surface-highlight': 'var(--surface-highlight)',
+        primary: {
+          DEFAULT: 'var(--primary)',
+          hover: 'var(--primary-hover)',
+          muted: 'var(--primary-muted)',
+          glow: 'var(--primary-glow)',
+        },
+        secondary: 'var(--secondary)',
+        accent: {
+          DEFAULT: 'var(--accent)',
+          success: 'var(--accent-success)',
+          warning: 'var(--accent-warning)',
+          danger: 'var(--accent-danger)',
+          info: 'var(--accent-info)',
+          gold: 'var(--accent-gold)',
+        },
+        text: {
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          muted: 'var(--text-muted)',
+          inverse: 'var(--text-inverse)',
+        },
+        border: {
+          DEFAULT: 'var(--border)',
+          hover: 'var(--border-hover)',
+          active: 'var(--border-active)',
+        },
+        overlay: 'var(--overlay)',
+      },
+      fontFamily: {
+        sans: "var(--font-sans)",
+        mono: "var(--font-mono)",
+      },
+      fontSize: {
+        display: ['48px', { lineHeight: '1.1', fontWeight: '700', letterSpacing: '-0.02em' }],
+        h1: ['32px', { lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.01em' }],
+        h2: ['24px', { lineHeight: '1.3', fontWeight: '600', letterSpacing: '-0.01em' }],
+        h3: ['20px', { lineHeight: '1.4', fontWeight: '500' }],
+        h4: ['16px', { lineHeight: '1.4', fontWeight: '500' }],
+        'body-lg': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
+        body: ['14px', { lineHeight: '1.6', fontWeight: '400' }],
+        'body-sm': ['13px', { lineHeight: '1.5', fontWeight: '400' }],
+        caption: ['12px', { lineHeight: '1.5', fontWeight: '400', letterSpacing: '0.01em' }],
+        'data-lg': ['32px', { lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.02em' }],
+        data: ['20px', { lineHeight: '1.3', fontWeight: '500', letterSpacing: '-0.01em' }],
+        'data-sm': ['14px', { lineHeight: '1.4', fontWeight: '400' }],
+      },
+      spacing: {
+        1: 'var(--space-1)',
+        2: 'var(--space-2)',
+        3: 'var(--space-3)',
+        4: 'var(--space-4)',
+        5: 'var(--space-5)',
+        6: 'var(--space-6)',
+        8: 'var(--space-8)',
+        10: 'var(--space-10)',
+        12: 'var(--space-12)',
+        16: 'var(--space-16)',
+      },
+      borderRadius: {
+        sm: 'var(--radius-sm)',
+        md: 'var(--radius-md)',
+        lg: 'var(--radius-lg)',
+        xl: 'var(--radius-xl)',
+        full: 'var(--radius-full)',
+      },
+      boxShadow: {
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
+        'glow-primary': 'var(--shadow-glow-primary)',
+        'glow-danger': 'var(--shadow-glow-danger)',
+      },
+      animation: {
+        'fade-in': 'fade-in var(--duration-normal) cubic-bezier(0.4, 0, 0.2, 1)',
+        'fade-in-up': 'fade-in-up var(--duration-normal) cubic-bezier(0.4, 0, 0.2, 1)',
+        'fade-in-left': 'fade-in-left var(--duration-normal) cubic-bezier(0.4, 0, 0.2, 1)',
+        'scale-in': 'scale-in var(--duration-slow) cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'bounce-dots': 'bounce-dots 1s infinite ease-in-out',
+        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shimmer': 'shimmer 2s infinite',
+        'scale-pulse': 'scale-pulse 2s infinite',
+      },
+      transitionDuration: {
+        instant: 'var(--duration-instant)',
+        fast: 'var(--duration-fast)',
+        normal: 'var(--duration-normal)',
+        slow: 'var(--duration-slow)',
+        slower: 'var(--duration-slower)',
+      },
+      backdropBlur: {
+        xs: '2px',
+        sm: '4px',
+        md: '8px',
+        lg: '12px',
+      },
+      screens: {
+        xs: '0px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
+    },
+  },
+  plugins: [
+    require('tailwindcss-animate'),
+  ],
+};
+
+export default config;
