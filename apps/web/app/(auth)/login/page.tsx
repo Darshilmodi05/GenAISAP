@@ -145,10 +145,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#030305] overflow-hidden select-none">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#030305] overflow-x-hidden select-none">
       
       {/* LEFT 55%: Animated Canvas abstract data flows & brand */}
-      <div className="hidden lg:flex w-[55%] h-screen relative flex-col justify-between p-20 border-r border-white/5 bg-[#05050a] overflow-hidden">
+      <div className="hidden lg:flex w-[55%] h-screen sticky top-0 relative flex-col justify-between p-20 border-r border-white/5 bg-[#05050a] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <canvas ref={canvasRef} className="w-full h-full block opacity-70" />
           <div className="absolute inset-0 bg-gradient-to-tr from-[#030305] via-transparent to-transparent opacity-90" />
@@ -191,12 +191,12 @@ export default function LoginPage() {
       </div>
 
       {/* RIGHT 45%: Auth Panel */}
-      <div className="flex-1 lg:w-[45%] h-screen flex flex-col justify-center px-10 md:px-24 lg:px-20 xl:px-28 relative bg-[#030305]">
+      <div className="flex-1 lg:w-[45%] min-h-screen flex flex-col justify-center px-6 py-12 md:px-24 lg:px-20 xl:px-28 relative bg-[#030305]">
         
         {/* Background glow orb */}
         <div className="absolute right-0 top-1/4 w-[500px] h-[500px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
 
-        <div className="w-full max-w-[460px] mx-auto space-y-16">
+        <div className="w-full max-w-[460px] mx-auto space-y-10 lg:space-y-16">
           
           {/* Logo & Tagline */}
           <div className="space-y-6">
