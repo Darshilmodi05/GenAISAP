@@ -91,8 +91,8 @@ export default function SettingsPage() {
              <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">System Governance Console</span>
           </div>
-          <h1 className="text-8xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.8] text-white">
-             NEXUS <br/> <span className="text-gradient">STATIONS</span>
+          <h1 className="text-8xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.8] text-text-primary">
+             <span className="text-gradient">SYSTEM</span>
           </h1>
         </div>
       </div>
@@ -112,14 +112,14 @@ export default function SettingsPage() {
                  className={cn(
                    "w-full flex items-center justify-between p-6 rounded-[2rem] transition-all duration-500 group relative overflow-hidden",
                    active 
-                     ? "text-black shadow-[0_0_40px_rgba(255,255,255,0.2)]" 
-                     : "text-text-muted hover:text-white hover:bg-white/5"
+                     ? "text-text-inverse shadow-md" 
+                     : "text-text-muted hover:text-text-primary hover:bg-surface-hover"
                  )}
                >
                  {active && (
                    <motion.div 
                      layoutId="settings-active"
-                     className="absolute inset-0 bg-white"
+                     className="absolute inset-0 bg-primary"
                      transition={{ type: 'spring', damping: 20, stiffness: 100 }}
                    />
                  )}
@@ -145,13 +145,13 @@ export default function SettingsPage() {
                className="glass-card rounded-[4rem] p-12 lg:p-20 relative overflow-hidden group"
              >
                 <div className="absolute top-0 right-0 p-20 opacity-5 group-hover:opacity-10 transition-opacity">
-                   <Settings size={200} />
+                   {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Settings, { size: 200 })}
                 </div>
 
                 {activeTab === 'general' && (
                   <div className="space-y-16 relative z-10">
                     <div className="space-y-4">
-                       <h3 className="text-4xl font-black text-white uppercase tracking-tight">Core Instance</h3>
+                       <h3 className="text-4xl font-black text-text-primary uppercase tracking-tight">Core Instance</h3>
                        <p className="text-lg text-text-secondary font-medium">Configure high-level workspace metadata and regional SAP telemetry.</p>
                     </div>
 
@@ -160,14 +160,14 @@ export default function SettingsPage() {
                           <label className="text-[10px] font-black uppercase tracking-[0.4em] text-text-muted ml-4">Workspace Identity</label>
                           <input 
                             defaultValue="GenAISAP ALPHA-01"
-                            className="w-full bg-white/5 border border-white/5 rounded-[2rem] p-8 text-xl font-bold text-white outline-none focus:border-primary/50 transition-all" 
+                            className="w-full bg-surface border border-border rounded-[2rem] p-8 text-xl font-bold text-text-primary outline-none focus:border-primary/50 transition-all" 
                           />
                        </div>
                        <div className="space-y-4">
                           <label className="text-[10px] font-black uppercase tracking-[0.4em] text-text-muted ml-4">Institutional Domain</label>
                           <input 
                             defaultValue="intelligence.sap.corp"
-                            className="w-full bg-white/5 border border-white/5 rounded-[2rem] p-8 text-xl font-bold text-white outline-none focus:border-primary/50 transition-all" 
+                            className="w-full bg-surface border border-border rounded-[2rem] p-8 text-xl font-bold text-text-primary outline-none focus:border-primary/50 transition-all" 
                           />
                        </div>
                     </div>
@@ -177,14 +177,14 @@ export default function SettingsPage() {
                 {activeTab === 'ai-config' && (
                   <div className="space-y-16 relative z-10">
                     <div className="space-y-4">
-                       <h3 className="text-4xl font-black text-white uppercase tracking-tight">Neural Engine</h3>
+                       <h3 className="text-4xl font-black text-text-primary uppercase tracking-tight">Neural Engine</h3>
                        <p className="text-lg text-text-secondary font-medium">Configure foundational LLM cognitive controls and temperature indexes.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                        <div className="space-y-4">
                           <label className="text-[10px] font-black uppercase tracking-[0.4em] text-text-muted ml-4">Inference Node Model</label>
-                          <select className="w-full bg-white/5 border border-white/5 rounded-[2rem] p-8 text-xl font-bold text-white outline-none focus:border-primary/50 appearance-none">
+                          <select className="w-full bg-surface border border-border rounded-[2rem] p-8 text-xl font-bold text-text-primary outline-none focus:border-primary/50 appearance-none">
                             <option className="bg-black">Claude 3.5 Sonnet (Primary)</option>
                             <option className="bg-black">GPT-4o Omnidirectional</option>
                           </select>
@@ -194,7 +194,7 @@ export default function SettingsPage() {
                           <input 
                             type="number"
                             defaultValue={20}
-                            className="w-full bg-white/5 border border-white/5 rounded-[2rem] p-8 text-xl font-bold text-white outline-none focus:border-primary/50 transition-all" 
+                            className="w-full bg-surface border border-border rounded-[2rem] p-8 text-xl font-bold text-text-primary outline-none focus:border-primary/50 transition-all" 
                           />
                        </div>
                     </div>
@@ -204,7 +204,7 @@ export default function SettingsPage() {
                 {activeTab === 'integrations' && (
                   <div className="space-y-16 relative z-10">
                     <div className="space-y-4">
-                       <h3 className="text-4xl font-black text-white uppercase tracking-tight">Telemetry Nodes</h3>
+                       <h3 className="text-4xl font-black text-text-primary uppercase tracking-tight">Telemetry Nodes</h3>
                        <p className="text-lg text-text-secondary font-medium">Monitor and sync active SAP OData connections and REST mesh nodes.</p>
                     </div>
                     <div className="space-y-6">
@@ -213,13 +213,13 @@ export default function SettingsPage() {
                         { label: 'SAP Cloud Sandbox', status: 'connected', latency: '120ms' },
                         { label: 'Local Intelligence Engine', status: 'connected', latency: '5ms' },
                       ].map((node) => (
-                        <div key={node.label} className="p-8 bg-white/[0.02] border border-white/5 rounded-[2.5rem] flex items-center justify-between hover:bg-white/[0.04] transition-all">
+                        <div key={node.label} className="p-8 bg-surface border border-border rounded-[2.5rem] flex items-center justify-between hover:bg-surface-hover transition-all">
                            <div className="flex items-center gap-6">
                              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
                                <Server size={20} />
                              </div>
                              <div>
-                               <p className="text-base font-black text-white uppercase tracking-tight">{node.label}</p>
+                               <p className="text-base font-black text-text-primary uppercase tracking-tight">{node.label}</p>
                                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-0.5">LATENCY: {node.latency}</p>
                              </div>
                            </div>
@@ -229,8 +229,8 @@ export default function SettingsPage() {
                         </div>
                       ))}
                     </div>
-                    <div className="pt-8 border-t border-white/5 flex justify-end">
-                      <button className="px-12 py-6 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 transition-all">
+                    <div className="pt-8 border-t border-border flex justify-end">
+                      <button className="px-12 py-6 bg-primary text-text-inverse rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] shadow-md hover:scale-105 active:scale-95 transition-all">
                         Sync All Nodes
                       </button>
                     </div>
@@ -240,7 +240,7 @@ export default function SettingsPage() {
                 {activeTab === 'security' && (
                   <div className="space-y-16 relative z-10">
                     <div className="space-y-4">
-                       <h3 className="text-4xl font-black text-white uppercase tracking-tight">Quantum Security</h3>
+                       <h3 className="text-4xl font-black text-text-primary uppercase tracking-tight">Quantum Security</h3>
                        <p className="text-lg text-text-secondary font-medium">Configure 256-bit encryption, MFA protocols and institutional access controls.</p>
                     </div>
                     <div className="space-y-6">
@@ -269,7 +269,7 @@ export default function SettingsPage() {
                     <div className="p-8 bg-emerald-500/5 border border-emerald-500/20 rounded-[2rem] flex items-center gap-6">
                       <ShieldCheck size={28} className="text-emerald-400 shrink-0" />
                       <div>
-                        <p className="text-base font-black text-white uppercase tracking-tight">
+                        <p className="text-base font-black text-text-primary uppercase tracking-tight">
                           Security Score: {isMfaActive ? '94/100' : '82/100'}
                         </p>
                         <p className="text-xs text-text-muted font-bold uppercase tracking-widest mt-1">
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                 {activeTab === 'billing' && (
                   <div className="space-y-16 relative z-10">
                     <div className="space-y-4">
-                       <h3 className="text-4xl font-black text-white uppercase tracking-tight">Resource Allocation</h3>
+                       <h3 className="text-4xl font-black text-text-primary uppercase tracking-tight">Resource Allocation</h3>
                        <p className="text-lg text-text-secondary font-medium">Monitor compute credits, API call quotas and neural inference budgets.</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -296,10 +296,10 @@ export default function SettingsPage() {
                       ].map((res) => {
                         const pct = Math.round((res.used / res.total) * 100);
                         return (
-                          <div key={res.label} className="p-8 bg-white/[0.02] border border-white/5 rounded-[2rem] space-y-6">
+                          <div key={res.label} className="p-8 bg-surface border border-border rounded-[2rem] space-y-6">
                             <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">{res.label}</p>
-                            <p className="text-4xl font-black text-white">{pct}%</p>
-                            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                            <p className="text-4xl font-black text-text-primary">{pct}%</p>
+                            <div className="h-2 w-full bg-surface-elevated rounded-full overflow-hidden">
                               <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${pct}%` }}
@@ -312,12 +312,12 @@ export default function SettingsPage() {
                         );
                       })}
                     </div>
-                    <div className="p-10 bg-white/[0.02] border border-white/5 rounded-[3rem] flex items-center justify-between">
+                    <div className="p-10 bg-surface border border-border rounded-[3rem] flex items-center justify-between">
                       <div>
-                        <p className="text-2xl font-black text-white uppercase">Enterprise Tier</p>
+                        <p className="text-2xl font-black text-text-primary uppercase">Enterprise Tier</p>
                         <p className="text-sm text-text-muted font-bold uppercase tracking-widest mt-1">Renews Jun 01, 2026 • $2,400/mo</p>
                       </div>
-                      <button className="px-10 py-5 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] hover:scale-105 transition-all">
+                      <button className="px-10 py-5 bg-primary text-text-inverse rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] hover:scale-105 active:scale-95 transition-all shadow-md">
                         Upgrade Cluster
                       </button>
                     </div>

@@ -95,11 +95,21 @@ const CommandCard = ({ title, value, trend, icon: Icon, color = 'primary', delay
 };
 
 export default function HomePage() {
-  const [metrics, setMetrics] = React.useState<DashboardMetrics | null>(null);
+  const [metrics, setMetrics] = React.useState<DashboardMetrics>({
+    revenueMTD: '$3,456,789',
+    revenueTrend: '12.4%',
+    openPOs: 147,
+    poTrend: -8,
+    dso: '38.5 Days',
+    dsoTrend: '1.2%',
+    systemHealth: '99.98%',
+  });
 
-  React.useEffect(() => { getDashboardMetrics().then(setMetrics); }, []);
-
-  if (!metrics) return null;
+  React.useEffect(() => { 
+    getDashboardMetrics().then((data) => {
+      if (data) setMetrics(data);
+    }); 
+  }, []);
 
   return (
     <div className="space-y-16 pb-32">
@@ -114,12 +124,12 @@ export default function HomePage() {
              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Neural Instance: ALPHA-01</span>
           </div>
-          <h1 className="text-7xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.8] text-white">
-             EXECUTIVE <br/> <span className="text-gradient">HOME</span>
+          <h1 className="text-7xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.8] text-text-primary">
+             <span className="text-gradient">HOME</span>
           </h1>
           <p className="text-xl text-text-secondary font-medium max-w-xl leading-relaxed tracking-tight">
              Orchestrating SAP S/4HANA intelligence with quantum precision. 
-             Current cognitive load at <span className="text-white font-bold">14.2%</span>.
+             Current cognitive load at <span className="text-text-primary font-bold">14.2%</span>.
           </p>
         </motion.div>
 
@@ -129,10 +139,10 @@ export default function HomePage() {
           className="flex flex-col items-end gap-6"
         >
            <div className="flex gap-4">
-              <Link href="/dashboard" className="px-10 py-5 bg-white text-black font-black uppercase tracking-[0.2em] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] text-xs">
+              <Link href="/dashboard" className="px-10 py-5 bg-primary text-text-inverse font-black uppercase tracking-[0.2em] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-md text-xs">
                  Initiate Synthesis
               </Link>
-              <button className="p-5 glass-card rounded-2xl hover:bg-white/10 transition-all">
+              <button className="p-5 glass-card rounded-2xl hover:bg-surface-hover transition-all">
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
               </button>
            </div>
@@ -173,9 +183,9 @@ export default function HomePage() {
           </div>
           
           <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl font-black tracking-tight text-white uppercase">Intelligence Stream</h2>
+            <h2 className="text-3xl font-black tracking-tight text-text-primary uppercase">Intelligence Stream</h2>
             <div className="flex gap-3">
-               <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest text-text-secondary">32,442 Logs Parsed</span>
+               <span className="px-3 py-1 bg-surface border border-border rounded-full text-[9px] font-bold uppercase tracking-widest text-text-secondary">32,442 Logs Parsed</span>
             </div>
           </div>
           
@@ -188,12 +198,12 @@ export default function HomePage() {
                <motion.div 
                 key={i}
                 whileHover={{ x: 10, scale: 1.01 }}
-                className="flex items-center justify-between p-6 bg-white/[0.02] border border-white/5 rounded-[2rem] hover:bg-white/[0.05] hover:border-white/10 transition-all cursor-pointer group/item"
+                className="flex items-center justify-between p-6 bg-surface-elevated/40 border border-border rounded-[2rem] hover:bg-surface-hover hover:border-border-active transition-all cursor-pointer group/item"
                >
                  <div className="flex items-center gap-8">
-                    <div className="w-14 h-14 glass-card rounded-2xl flex items-center justify-center text-[10px] font-black text-white">{a.m}</div>
+                    <div className="w-14 h-14 glass-card rounded-2xl flex items-center justify-center text-[10px] font-black text-text-primary">{a.m}</div>
                     <div>
-                      <p className="text-lg font-bold text-white group-hover/item:text-primary transition-colors">{a.t}</p>
+                      <p className="text-lg font-bold text-text-primary group-hover/item:text-primary transition-colors">{a.t}</p>
                       <span className="text-[10px] font-medium text-text-muted uppercase tracking-widest mt-1 block">Latency: 14ms &nbsp;•&nbsp; Heuristic v3.4</span>
                     </div>
                  </div>
@@ -221,9 +231,9 @@ export default function HomePage() {
                     <div className="space-y-6">
                        <div className="flex justify-between items-end">
                           <span className="text-[10px] font-bold text-text-secondary uppercase">Task Completion</span>
-                          <span className="text-2xl font-black text-white">33%</span>
+                          <span className="text-2xl font-black text-text-primary">33%</span>
                        </div>
-                       <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden p-[1px] border border-white/10">
+                       <div className="h-2 w-full bg-surface-elevated border border-border rounded-full overflow-hidden p-[1px]">
                           <motion.div 
                             initial={{ width: 0 }}
                             animate={{ width: '33%' }}
@@ -237,7 +247,7 @@ export default function HomePage() {
                     </div>
                  </div>
                  
-                 <button className="w-full py-5 bg-primary text-white font-black uppercase tracking-[0.3em] rounded-2xl shadow-glow-primary hover:scale-105 active:scale-95 transition-all text-xs relative z-10 mt-12">
+                 <button className="w-full py-5 bg-primary text-text-inverse font-black uppercase tracking-[0.3em] rounded-2xl shadow-glow-primary hover:scale-105 active:scale-95 transition-all text-xs relative z-10 mt-12">
                     Stabilize Core
                  </button>
               </Card>

@@ -1,19 +1,26 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Syne, DM_Sans, DM_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 
-const inter = Inter({
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const dmMono = DM_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
+  weight: ['400', '500'],
 });
 
 export const metadata: Metadata = {
@@ -32,12 +39,12 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${inter.variable} ${jetbrainsMono.variable} dark`} 
+      className={`${syne.variable} ${dmSans.variable} ${dmMono.variable} dark`} 
       suppressHydrationWarning
       style={{ colorScheme: 'dark' }}
     >
       <body className="antialiased bg-background text-text-primary">
-      <ThemeProvider defaultTheme="dark" forcedTheme="dark">
+      <ThemeProvider defaultTheme="dark">
         <PostHogProvider>
           <PostHogPageView />
           <QueryProvider>

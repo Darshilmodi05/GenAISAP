@@ -137,20 +137,20 @@ export default function ChatPage() {
               ].map((s, i) => (
                 <motion.div 
                   key={i}
-                  whileHover={{ x: 5, backgroundColor: 'rgba(255,255,255,0.03)' }}
-                  className="p-5 border border-white/5 rounded-[2rem] cursor-pointer transition-all group/item"
+                  whileHover={{ x: 5, backgroundColor: 'var(--surface-hover)' }}
+                  className="p-5 border border-border rounded-[2rem] cursor-pointer transition-all group/item"
                 >
                   <div className="flex justify-between mb-2">
                     <span className={cn("text-[10px] font-black uppercase tracking-widest", s.c === 'primary' ? 'text-violet-400' : s.c === 'secondary' ? 'text-cyan-400' : 'text-emerald-400')}>{s.m}</span>
                     <span className="text-[10px] text-text-muted font-bold">{s.d}</span>
                   </div>
-                  <p className="text-sm font-bold text-text-secondary group-hover/item:text-white transition-colors">{s.t}</p>
+                  <p className="text-sm font-bold text-text-secondary group-hover/item:text-text-primary transition-colors">{s.t}</p>
                 </motion.div>
               ))}
            </div>
            
-           <div className="pt-8 mt-8 border-t border-white/5">
-              <button className="w-full py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all">
+           <div className="pt-8 mt-8 border-t border-border">
+              <button className="w-full py-4 bg-surface-elevated hover:bg-surface-hover text-text-primary rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all">
                  Load Archive
               </button>
            </div>
@@ -212,7 +212,7 @@ export default function ChatPage() {
               <button 
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="absolute right-8 bottom-8 w-16 h-16 bg-white text-black rounded-3xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-[0_0_50px_rgba(255,255,255,0.3)] z-20 group/btn"
+                className="absolute right-8 bottom-8 w-16 h-16 bg-primary text-text-inverse rounded-3xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md z-20 group/btn"
               >
                 <svg className="group-hover:rotate-12 transition-transform duration-500" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m12 19 9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
               </button>
@@ -239,15 +239,15 @@ export default function ChatPage() {
                </div>
             </div>
             
-            <div className="flex-1 flex flex-col justify-end gap-6 pt-10 border-t border-white/5">
+            <div className="flex-1 flex flex-col justify-end gap-6 pt-10 border-t border-border">
                <span className="text-[11px] font-black uppercase tracking-[0.4em] text-primary">Data Lineage Trace</span>
-               <div className="p-6 bg-black/40 border border-white/5 rounded-2xl font-mono text-[10px] text-text-secondary leading-loose">
+               <div className="p-6 bg-surface-elevated border border-border rounded-2xl font-mono text-[10px] text-text-secondary leading-loose">
                   <span className="text-violet-400">INIT:</span> QUANTUM_CORE_V8 <br/>
                   <span className="text-cyan-400">PULL:</span> S4_ACDOCA_DELTA <br/>
                   <span className="text-emerald-400">MAP:</span> ENTITY_1000_LEDGER <br/>
-                  <span className="text-white/40">CALC:</span> VARIANCE_VECTOR_P9
+                  <span className="text-text-muted">CALC:</span> VARIANCE_VECTOR_P9
                </div>
-               <button className="w-full py-4 bg-primary text-white font-black uppercase tracking-[0.3em] rounded-2xl text-[10px] shadow-glow-primary">
+               <button className="w-full py-4 bg-primary text-text-inverse font-black uppercase tracking-[0.3em] rounded-2xl text-[10px] shadow-glow-primary">
                   Export Narrative
                </button>
             </div>

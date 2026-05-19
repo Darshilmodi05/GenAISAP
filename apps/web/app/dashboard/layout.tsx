@@ -20,10 +20,17 @@ export default function DashboardLayout({
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null;
+  if (!isMounted) {
+    return (
+      <div className="flex h-screen bg-background overflow-hidden relative opacity-0">
+        <div className="fixed inset-0 z-0 bg-neural-mesh pointer-events-none" />
+        <div className="noise-overlay" />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex h-screen bg-[#030305] overflow-hidden relative">
+    <div className="flex h-screen bg-background overflow-hidden relative">
       {/* Background Neural Particles / Mesh */}
       <div className="fixed inset-0 z-0 bg-neural-mesh pointer-events-none" />
       <div className="noise-overlay" />
@@ -38,7 +45,7 @@ export default function DashboardLayout({
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full"
+          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full transform-gpu will-change-transform"
         />
         <motion.div 
           animate={{ 
@@ -48,7 +55,7 @@ export default function DashboardLayout({
             y: [0, 100, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] bg-secondary/10 blur-[150px] rounded-full"
+          className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] bg-secondary/10 blur-[150px] rounded-full transform-gpu will-change-transform"
         />
       </div>
 
@@ -62,13 +69,12 @@ export default function DashboardLayout({
           className="flex-1 overflow-y-auto overflow-x-hidden pt-[60px] custom-scrollbar"
         >
           <div className="max-w-[1600px] mx-auto px-6 py-8">
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               <motion.div
                 key={pathname}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
               >
                 {children}
               </motion.div>

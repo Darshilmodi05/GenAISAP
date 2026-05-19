@@ -51,7 +51,7 @@ export default function AnalyticsDashboard() {
              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary">Operational Intelligence Deck</span>
           </div>
           <h1 className="text-8xl lg:text-9xl font-black tracking-[-0.05em] leading-[0.8] text-white">
-             DATA <br/> <span className="text-gradient">ANALYTICS</span>
+             <span className="text-gradient">ANALYTICS</span>
           </h1>
         </div>
         

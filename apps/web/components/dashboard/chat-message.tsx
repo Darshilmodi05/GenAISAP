@@ -45,8 +45,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <div className={cn(
           "p-10 rounded-[2.5rem] text-lg font-semibold tracking-tight leading-relaxed relative overflow-hidden transition-all duration-700",
           isAI 
-            ? "glass-card text-white border-white/10 hover:border-white/20" 
-            : "bg-gradient-to-br from-violet-600 to-violet-900 text-white shadow-[0_20px_50px_rgba(124,58,237,0.2)]"
+            ? "glass-card text-text-primary hover:border-border-active" 
+            : "bg-gradient-to-br from-primary to-blue-800 text-text-inverse shadow-glow-primary"
         )}>
           {isAI && (
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -71,9 +71,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             </div>
           ) : (
             <div className="flex gap-2">
-              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 rounded-full bg-white/40" />
-              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-2 h-2 rounded-full bg-white/40" />
-              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="w-2 h-2 rounded-full bg-white/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 rounded-full bg-primary/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-2 h-2 rounded-full bg-primary/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="w-2 h-2 rounded-full bg-primary/40" />
             </div>
           )}
         </div>

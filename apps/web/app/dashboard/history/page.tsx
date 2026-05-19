@@ -24,7 +24,7 @@ export default function HistoryPage() {
              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary">Institutional Audit Deck</span>
           </div>
           <h1 className="text-8xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.8] text-white">
-             NEURAL <br/> <span className="text-gradient">HISTORY</span>
+             <span className="text-gradient">HISTORY</span>
           </h1>
         </div>
         <div className="flex gap-4">

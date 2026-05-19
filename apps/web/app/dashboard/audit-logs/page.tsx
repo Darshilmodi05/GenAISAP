@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { 
   ShieldCheck, 
   Search, 
@@ -144,10 +146,74 @@ export default function AuditLogsPage() {
 
   const handleExport = (format: 'CSV' | 'PDF') => {
     setIsExporting(true);
+    
     setTimeout(() => {
-      setIsExporting(false);
-      alert(`Audit Logs successfully compiled and exported in ${format} format!`);
-    }, 1200);
+      try {
+        if (format === 'CSV') {
+          const headers = ['Log Hash ID', 'Action Metric', 'Target Node', 'Operator', 'Role', 'Gateway IP', 'Risk Rating', 'Timestamp'];
+          const csvRows = filteredLogs.map(log => [
+            log.id,
+            log.action,
+            log.resource_id,
+            log.user_name,
+            log.role,
+            log.ip_address,
+            log.severity,
+            new Date(log.created_at).toLocaleString()
+          ]);
+          
+          const csvContent = [
+            headers.join(','),
+            ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
+          ].join('\n');
+          
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement('a');
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', `GenAISAP_Audit_Logs_${new Date().toISOString().split('T')[0]}.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else if (format === 'PDF') {
+          const doc = new jsPDF('landscape');
+          
+          doc.setFontSize(18);
+          doc.text('GenAISAP Audit Logs', 14, 22);
+          
+          doc.setFontSize(11);
+          doc.setTextColor(100);
+          doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+          
+          const tableColumn = ['Log Hash ID', 'Action Metric', 'Target Node', 'Operator', 'IP Address', 'Risk Rating', 'Timestamp'];
+          const tableRows = filteredLogs.map(log => [
+            log.id,
+            log.action,
+            log.resource_id,
+            `${log.user_name} (${log.role})`,
+            log.ip_address,
+            log.severity.toUpperCase(),
+            new Date(log.created_at).toLocaleString()
+          ]);
+          
+          autoTable(doc, {
+            head: [tableColumn],
+            body: tableRows,
+            startY: 40,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+            alternateRowStyles: { fillColor: [245, 245, 245] }
+          });
+          
+          doc.save(`GenAISAP_Audit_Logs_${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+      } catch (error) {
+        console.error('Export failed:', error);
+      } finally {
+        setIsExporting(false);
+      }
+    }, 600); // Small delay for visual feedback
   };
 
   return (
@@ -161,7 +227,7 @@ export default function AuditLogsPage() {
              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Immutable Security Sentinel</span>
           </div>
           <h1 className="text-8xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.8] text-white">
-             AUDIT <br/> <span className="text-gradient">LOGS</span>
+             <span className="text-gradient">LOGS</span>
           </h1>
         </div>
         

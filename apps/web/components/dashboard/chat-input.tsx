@@ -27,12 +27,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({ input, onInputChange, onVo
 
   return (
     <div className="relative w-full max-w-7xl mx-auto">
-      <div className="glass-card rounded-[3rem] p-4 lg:p-6 shadow-[0_20px_80px_rgba(0,0,0,0.6)] border-white/10 group-focus-within:border-primary/40 transition-all duration-700">
+      <div className="glass-card rounded-[3rem] p-4 lg:p-6 shadow-md border-border group-focus-within:border-primary/40 transition-all duration-700">
         <div className="flex items-end gap-6">
           <div className="flex gap-2 mb-3">
              <motion.button 
-               whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.05)' }}
-               className="p-4 rounded-2xl text-text-muted hover:text-white transition-all"
+               whileHover={{ scale: 1.1, backgroundColor: 'var(--surface-hover)' }}
+               className="p-4 rounded-2xl text-text-muted hover:text-text-primary transition-all"
              >
                <Paperclip size={20} />
              </motion.button>
@@ -50,19 +50,19 @@ export const ChatInput: React.FC<ChatInputProps> = ({ input, onInputChange, onVo
               }
             }}
             placeholder="Ask GenAISAP about FICO, SD or MM telemetry..."
-            className="flex-1 bg-transparent border-none focus:ring-0 text-xl font-medium py-4 resize-none max-h-64 min-h-[60px] outline-none text-white placeholder:text-text-muted custom-scrollbar"
+            className="flex-1 bg-transparent border-none focus:ring-0 text-xl font-medium py-4 resize-none max-h-64 min-h-[60px] outline-none text-text-primary placeholder:text-text-muted custom-scrollbar"
             rows={1}
             disabled={isLoading}
           />
         </div>
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/5">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
           <div className="flex items-center gap-6 px-2">
              <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">SAP S/4HANA CONNECTED</span>
              </div>
-             <div className="h-4 w-[1px] bg-white/10" />
+             <div className="h-4 w-[1px] bg-border" />
              <div className="flex items-center gap-3">
                 <Zap size={12} className="text-primary" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">HEURISTIC v4.0 ACTIVE</span>
@@ -70,12 +70,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({ input, onInputChange, onVo
           </div>
 
           <div className="flex items-center gap-4">
-             <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/5">
+             <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface rounded-xl border border-border">
                 <Database size={12} className="text-secondary" />
                 <span className="text-[9px] font-black text-text-secondary uppercase tracking-widest">MTD_REV_DELTA_SYNC</span>
              </div>
              <div className="text-[9px] font-black text-text-muted uppercase tracking-widest mr-4">
-                Press <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10 text-white mx-1">ENTER</kbd> to Send
+                Press <kbd className="px-2 py-1 bg-surface-elevated rounded border border-border text-text-primary mx-1">ENTER</kbd> to Send
              </div>
           </div>
         </div>
