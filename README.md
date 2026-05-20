@@ -43,22 +43,54 @@ The system is compiled, fully optimized, and deployed in high-availability produ
 
 ---
 
-## 📂 System Topology (Monorepo)
+## 📂 System Topology
 
 ```text
 gensap/
-├── apps/
-│   ├── web/                     # Next.js 15 App Router Frontend
-│   └── ml-service/              # Python REST FastAPI Telemetry Engine
-├── packages/
-│   └── api-client/              # Standard Orchestrated API definitions
-├── docs/                        # Complete Technical Design Documentation
-│   ├── architecture.md          # Monorepo, Data Flow and System Design
-│   ├── ai-pipeline.md           # RAG Architecture and pgvector Similarity
-│   ├── api-reference.md         # Full REST/RPC Payload JSON Schema bounds
-│   ├── database-schema.md       # ER models and PostgreSQL migrations
-│   └── deployment.md            # Local, Docker, and Production environments
+├── app/                        # Next.js 15 App Router Frontend & Serverless Routes
+├── components/                 # Reusable UI Elements (glassmorphic theme)
+├── hooks/                      # Custom React Hooks
+├── lib/                        # Shared Utilities (Supabase client, audio utils)
+├── store/                      # Zustand Client-side State Stores
+├── supabase/                   # Database schemas, migrations, and seed scripts
+├── docs/                       # Technical Design Documentation
+│   ├── architecture.md         # Topology, Data Flow and System Design
+│   ├── ai-pipeline.md          # RAG Architecture and pgvector Similarity
+│   ├── api-reference.md        # Full REST/RPC Payload JSON Schema bounds
+│   ├── database-schema.md      # ER models and PostgreSQL migrations
+│   └── deployment.md           # Local, Docker, and Production environments
+├── __tests__/                  # Unit and component validation test suites
 ```
+
+---
+
+## 🛠️ Languages & Tech Stack Breakdown
+
+GenAISAP is built as an enterprise-grade AI-orchestrated financial & resource intelligence gateway. Below is the comprehensive taxonomy of languages, frameworks, and tools powering the platform.
+
+### 1. Codebase Language Composition
+
+```mermaid
+pie title GenAISAP Codebase Composition
+    "TypeScript (Next.js & Serverless)" : 68
+    "SQL (Supabase Migrations & Security)" : 22
+    "Markdown & Docs" : 7
+    "JSON & Configs" : 3
+```
+
+* **TypeScript / TSX (68%):** Modern frontend (React 19, Next.js App Router), Serverless API endpoints, middleware, type safety schemas (Zod), state management (Zustand), and verification tests.
+* **SQL (22%):** Powers the relational schemas, Row Level Security (RLS) policies, triggers, seed data, and historical migrations in Supabase.
+* **Markdown (7%):** Found in extensive technical design docs, pipelines description (`docs/ai-pipeline.md`), and enterprise playbooks.
+* **JSON & YAML (3%):** Houses package configurations, Tailwind directives, compiler guidelines, and `docker-compose.yml` for localized environment setups.
+
+### 2. Core Architecture & Tech Stack
+
+The application utilizes a premium, state-of-the-art modern cloud stack:
+
+* **Frontend UI Framework:** Next.js 15 (App Router), React 19, TailwindCSS, and Framer Motion for high-performance glassmorphism interfaces and fluid animations.
+* **Backend Database & Security:** Supabase (PostgreSQL) with advanced RLS, coupled with Upstash Redis for high-speed caching, BullMQ background queues, and rate-limiting.
+* **AI Orchestration & Cognitive Engines:** LangChain Core and AI SDK managing interactions with Anthropic's Claude and OpenAI's GPT models, alongside AssemblyAI for transcription services.
+* **Telemetry & Error Intelligence:** Sentry for edge-to-server transaction trace logging and PostHog for privacy-preserving usage telemetry.
 
 ---
 
