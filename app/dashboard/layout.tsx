@@ -69,12 +69,13 @@ export default function DashboardLayout({
           className="flex-1 overflow-y-auto overflow-x-hidden pt-[60px] custom-scrollbar"
         >
           <div className="max-w-[1600px] mx-auto px-6 py-8">
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               <motion.div
                 key={pathname}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
               >
                 {children}
               </motion.div>
