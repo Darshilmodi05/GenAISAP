@@ -20,6 +20,13 @@ const metrics = [
 export default function AnalyticsDashboard() {
   const [activeModule, setActiveModule] = React.useState('All');
 
+  // Dynamic simulation variables
+  const [driftOffset, setDriftOffset] = React.useState(0);
+  const [variance, setVariance] = React.useState(0);
+  const [inventorySlack, setInventorySlack] = React.useState(0);
+  const [severityThreshold, setSeverityThreshold] = React.useState(35);
+  const [stabilized, setStabilized] = React.useState(false);
+
   const filteredMetrics = activeModule === 'All' 
     ? metrics 
     : metrics.filter(m => m.module === activeModule);
@@ -38,7 +45,15 @@ export default function AnalyticsDashboard() {
 
   const handleStabilize = () => {
     console.log('Initiating Neural Stabilization Protocol...');
-    // In a real app, this would trigger an API call
+    setStabilized(true);
+    setInventorySlack(0);
+    setDriftOffset(0);
+    setVariance(0);
+    
+    // Hold stabilization for 6 seconds, then restore active simulation mode
+    setTimeout(() => {
+      setStabilized(false);
+    }, 6000);
   };
 
   return (
@@ -105,8 +120,16 @@ export default function AnalyticsDashboard() {
                   <div className="relative z-10">
                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-text-muted mb-4">{m.title}</p>
                      <div className="flex items-baseline gap-4">
-                        <span className="text-6xl font-black tracking-tighter text-white">{m.value}</span>
-                        <span className={cn("text-xs font-bold", m.trend.isPositive ? "text-emerald-400" : "text-rose-400")}>{m.trend.value}</span>
+                        <span className="text-6xl font-black tracking-tighter text-white">
+                          {m.title === 'MTD Revenue' && driftOffset !== 0
+                            ? `$${(12.45 + driftOffset * 0.1).toFixed(2)}M`
+                            : m.value}
+                        </span>
+                        <span className={cn("text-xs font-bold", m.trend.isPositive ? "text-emerald-400" : "text-rose-400")}>
+                          {m.title === 'MTD Revenue' && driftOffset !== 0
+                            ? `${(driftOffset > 0 ? '+' : '')}${(8.4 + driftOffset * 0.5).toFixed(1)}%`
+                            : m.trend.value}
+                        </span>
                      </div>
                   </div>
                </Card>
@@ -151,24 +174,27 @@ export default function AnalyticsDashboard() {
                 {[...Array(6)].map((_, i) => <div key={i} className="w-full h-[1px] bg-white" />)}
               </div>
 
-              {[45, 62, 55, 78, 88, 72, 85, 95, 82, 98, 92, 100].map((val, i) => (
-                <div key={i} className="flex-1 flex flex-col gap-5 items-center h-full relative group/bar">
-                  <div className="w-full relative h-full flex items-end justify-center">
-                    {/* Forecast Bar */}
-                    <div className="absolute bottom-0 w-full bg-secondary/10 border border-secondary/20 rounded-t-3xl transition-all duration-1000" style={{ height: `${val}%` }} />
-                    {/* Actual Bar */}
-                    <motion.div 
-                      initial={{ height: 0 }}
-                      animate={{ height: `${val - 12}%` }}
-                      transition={{ duration: 2, delay: 0.8 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                      className="relative w-full bg-gradient-to-t from-primary/20 via-primary/50 to-primary group-hover/bar:brightness-125 transition-all rounded-t-3xl shadow-[0_0_30px_rgba(124,58,237,0.2)]"
-                    >
-                       <div className="absolute top-0 inset-x-0 h-1.5 bg-white/40 blur-[2px] rounded-t-3xl" />
-                    </motion.div>
+              {[45, 62, 55, 78, 88, 72, 85, 95, 82, 98, 92, 100].map((val, i) => {
+                const dynamicVal = stabilized ? Math.round(50 + (i % 4) * 8) : Math.max(15, val + driftOffset * 1.5);
+                return (
+                  <div key={i} className="flex-1 flex flex-col gap-5 items-center h-full relative group/bar">
+                    <div className="w-full relative h-full flex items-end justify-center">
+                      {/* Forecast Bar */}
+                      <div className="absolute bottom-0 w-full bg-secondary/10 border border-secondary/20 rounded-t-3xl transition-all duration-700" style={{ height: `${dynamicVal}%` }} />
+                      {/* Actual Bar */}
+                      <motion.div 
+                        initial={{ height: 0 }}
+                        animate={{ height: `${Math.max(10, dynamicVal - 12 - variance * 0.5)}%` }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="relative w-full bg-gradient-to-t from-primary/20 via-primary/50 to-primary group-hover/bar:brightness-125 transition-all rounded-t-3xl shadow-[0_0_30px_rgba(124,58,237,0.2)]"
+                      >
+                         <div className="absolute top-0 inset-x-0 h-1.5 bg-white/40 blur-[2px] rounded-t-3xl" />
+                      </motion.div>
+                    </div>
+                    <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">{i+1}M</span>
                   </div>
-                  <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">{i+1}M</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
         </motion.div>
@@ -180,9 +206,9 @@ export default function AnalyticsDashboard() {
              <h3 className="text-[11px] font-black text-primary uppercase tracking-[0.5em] mb-12">Modular Health</h3>
              <div className="space-y-12">
                 {[
-                  { m: 'FICO RECON', v: 88, c: 'violet-500' },
-                  { m: 'MM LOGISTICS', v: 74, c: 'cyan-500' },
-                  { m: 'SD PIPELINE', v: 42, c: 'emerald-500' }
+                  { m: 'FICO RECON', v: stabilized ? 99 : Math.max(60, Math.min(100, 88 + driftOffset * 0.5)), c: 'violet-500' },
+                  { m: 'MM LOGISTICS', v: stabilized ? 98 : Math.max(30, Math.min(100, 74 - inventorySlack)), c: 'cyan-500' },
+                  { m: 'SD PIPELINE', v: stabilized ? 95 : Math.max(20, Math.min(100, 42 - variance * 2)), c: 'emerald-500' }
                 ].map((item, i) => (
                   <div key={i} className="space-y-5">
                     <div className="flex justify-between items-end">
@@ -193,7 +219,7 @@ export default function AnalyticsDashboard() {
                        <motion.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${item.v}%` }}
-                        transition={{ duration: 1.5, delay: 1 + i * 0.1 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                         className={cn("h-full rounded-full shadow-glow-primary", getModuleColor(item.c))} 
                        />
                        <motion.div 
@@ -207,26 +233,157 @@ export default function AnalyticsDashboard() {
              </div>
           </Card>
 
-          <Card className="bg-gradient-to-br from-primary to-violet-900 text-white p-12 rounded-[4rem] relative overflow-hidden group h-[260px] flex flex-col justify-center shadow-[0_0_60px_rgba(124,58,237,0.3)]">
+          <Card className="bg-gradient-to-br from-primary to-violet-900 text-white p-12 rounded-[4rem] relative overflow-hidden group h-[260px] flex flex-col justify-center shadow-[0_0_60px_rgba(124,58,237,0.3)] transition-all duration-700">
              <div className="absolute inset-0 bg-neural-mesh opacity-20" />
              <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
                    <div className="w-8 h-8 rounded-xl bg-white text-primary flex items-center justify-center font-black text-xs">AI</div>
                    <h4 className="text-[11px] font-black uppercase tracking-[0.4em] opacity-80">Heuristic Engine</h4>
                 </div>
-                <p className="text-2xl font-black leading-tight tracking-tighter mb-8 uppercase">
-                   DETECTED MM INVENTORY DRIFT. EXECUTE OPTIMIZATION PROTOCOL.
+                <p className="text-xl font-black leading-tight tracking-tighter mb-8 uppercase h-14 overflow-hidden">
+                   {stabilized 
+                     ? "Ecosystem Calibrated. Parameters within high-accuracy baseline bounds." 
+                     : (inventorySlack > 18
+                        ? "CRITICAL MM INVENTORY OVERRUN DETECTED. EXECUTE CALIBRATION." 
+                        : "DETECTED MM INVENTORY DRIFT. EXECUTE OPTIMIZATION PROTOCOL."
+                       )}
                 </p>
                 <button 
                   onClick={handleStabilize}
-                  className="w-full h-16 bg-white text-black hover:bg-neutral-100 transition-all text-[11px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl active:scale-95"
+                  disabled={stabilized}
+                  className={cn(
+                    "w-full h-16 transition-all text-[11px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl active:scale-95",
+                    stabilized 
+                      ? "bg-emerald-500 text-white cursor-default" 
+                      : "bg-white text-black hover:bg-neutral-100"
+                  )}
                 >
-                   Stabilize Ecosystem
+                   {stabilized ? "Ecosystem Stable" : "Stabilize Ecosystem"}
                 </button>
              </div>
           </Card>
         </div>
       </div>
+
+      {/* Dynamic Sandbox Control Deck */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 1 }}
+        className="glass-card rounded-[4rem] p-12 border-white/5 relative overflow-hidden group shadow-[0_0_50px_rgba(124,58,237,0.15)] mt-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+        
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-10 pb-8 border-b border-white/5">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[9px] font-black uppercase tracking-[0.2em] text-primary">
+              Interactive ML Simulation Suite
+            </div>
+            <h3 className="text-3xl font-black text-white uppercase tracking-tight">Neural Simulation Control Deck</h3>
+            <p className="text-xs text-text-muted">Manually manipulate SAP system variables in real time to simulate variance scenarios, load stress, and test cognitive anomaly triggers.</p>
+          </div>
+          
+          <Button
+            onClick={handleStabilize}
+            disabled={stabilized}
+            className={cn(
+              "h-14 px-10 text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl shadow-2xl transition-all duration-700 active:scale-95",
+              stabilized
+                ? "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/20"
+                : "bg-white text-black hover:bg-neutral-100"
+            )}
+          >
+            {stabilized ? "Ecosystem Standardized • 99.9% Health" : "Stabilize Ecosystem"}
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Slider 1 */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.3em]">Revenue Drift Offset</span>
+              <span className="text-sm font-black text-primary font-mono">{driftOffset > 0 ? `+${driftOffset}` : driftOffset}M</span>
+            </div>
+            <input
+              type="range"
+              min="-10"
+              max="20"
+              step="1"
+              value={driftOffset}
+              onChange={(e) => {
+                setDriftOffset(Number(e.target.value));
+                if (stabilized) setStabilized(false);
+              }}
+              className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
+            />
+            <p className="text-[9px] text-text-muted">Simulate overall ledger revenue growth or compression drift.</p>
+          </div>
+
+          {/* Slider 2 */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.3em]">Forecast Volatility</span>
+              <span className="text-sm font-black text-secondary font-mono">{variance > 0 ? `+${variance}` : variance}</span>
+            </div>
+            <input
+              type="range"
+              min="-5"
+              max="10"
+              step="0.5"
+              value={variance}
+              onChange={(e) => {
+                setVariance(Number(e.target.value));
+                if (stabilized) setStabilized(false);
+              }}
+              className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary"
+            />
+            <p className="text-[9px] text-text-muted">Warp future variance projection confidence paths.</p>
+          </div>
+
+          {/* Slider 3 */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.3em]">Logistics Inventory Slack</span>
+              <span className="text-sm font-black text-rose-400 font-mono">{inventorySlack > 0 ? `+${inventorySlack}` : inventorySlack}%</span>
+            </div>
+            <input
+              type="range"
+              min="-10"
+              max="35"
+              step="1"
+              value={inventorySlack}
+              onChange={(e) => {
+                setInventorySlack(Number(e.target.value));
+                if (stabilized) setStabilized(false);
+              }}
+              className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-rose-400"
+            />
+            <p className="text-[9px] text-text-muted">Inject inventory supply chain lags and logistics stress factors.</p>
+          </div>
+
+          {/* Slider 4 */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.3em]">Anomaly Severity Bound</span>
+              <span className="text-sm font-black text-white font-mono">{severityThreshold}</span>
+            </div>
+            <input
+              type="range"
+              min="20"
+              max="55"
+              step="1"
+              value={severityThreshold}
+              onChange={(e) => {
+                setSeverityThreshold(Number(e.target.value));
+                if (stabilized) setStabilized(false);
+              }}
+              className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-white"
+            />
+            <p className="text-[9px] text-text-muted">Redefine heuristic triggers (lower bounds detect more anomalies).</p>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Advanced ML Data Visualizations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
@@ -235,7 +392,7 @@ export default function AnalyticsDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 1 }}
         >
-          <ForecastChart />
+          <ForecastChart driftOffset={driftOffset} variance={variance} />
         </motion.div>
         
         <motion.div
@@ -243,7 +400,7 @@ export default function AnalyticsDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4, duration: 1 }}
         >
-          <AnomalyChart />
+          <AnomalyChart inventorySlack={inventorySlack} severityThreshold={severityThreshold} stabilized={stabilized} />
         </motion.div>
       </div>
 

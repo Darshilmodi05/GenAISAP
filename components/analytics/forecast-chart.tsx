@@ -7,19 +7,32 @@ import { motion } from 'framer-motion';
  * Premium Neural Forecast Chart
  * Uses Framer Motion for high-fidelity path animations and executive aesthetics.
  */
-export const ForecastChart = () => {
-  // Mock time-series data
-  const historicalData = [10, 15, 12, 18, 22, 20, 25];
-  const forecastData = [25, 28, 32, 30, 35, 40];
-  const confidenceUpper = [25, 30, 36, 35, 42, 50];
-  const confidenceLower = [25, 26, 28, 25, 28, 30];
+export const ForecastChart = ({
+  driftOffset = 0,
+  variance = 0
+}: {
+  driftOffset?: number;
+  variance?: number;
+}) => {
+  // Base time-series data
+  const baseHistoricalData = [10, 15, 12, 18, 22, 20, 25];
+  const baseForecastData = [25, 28, 32, 30, 35, 40];
+
+  // Dynamic calculations based on drift and variance parameters
+  const historicalData = baseHistoricalData.map(v => Math.max(2, v + driftOffset));
+  const forecastData = baseForecastData.map((v, i) => Math.max(2, v + driftOffset + (i * variance)));
+  const confidenceUpper = forecastData.map((v, i) => v + 5 + i * (2 + Math.abs(variance) * 0.5));
+  const confidenceLower = forecastData.map((v, i) => Math.max(1, v - 5 - i * (1.5 + Math.abs(variance) * 0.3)));
 
   const width = 800;
   const height = 300;
   const padding = 40;
 
+  // Auto-scale the Y-axis to prevent clipping of simulated trajectories
+  const maxVal = Math.max(...historicalData, ...confidenceUpper, 60);
+
   const getX = (i: number, total: number) => (i / (total - 1)) * (width - padding * 2) + padding;
-  const getY = (val: number) => height - ((val / 50) * (height - padding * 2) + padding);
+  const getY = (val: number) => height - ((val / maxVal) * (height - padding * 2) + padding);
 
   const historicalPath = historicalData
     .map((v, i) => `${i === 0 ? 'M' : 'L'} ${getX(i, historicalData.length + forecastData.length - 1)} ${getY(v)}`)
@@ -124,12 +137,14 @@ export const ForecastChart = () => {
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 3 }}
-          className="absolute right-10 top-1/2 -translate-y-1/2 glass-card p-6 border-primary/30 rounded-2xl shadow-glow-primary"
+          transition={{ duration: 0.5 }}
+          className="absolute right-10 top-1/2 -translate-y-1/2 glass-card p-6 border-primary/30 rounded-2xl shadow-glow-primary z-25"
         >
            <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-1">AI Projection</p>
-           <p className="text-xl font-black text-white leading-none">$42.4M</p>
-           <p className="text-[8px] font-bold text-text-muted mt-2 uppercase tracking-widest">Confidence: 94.2%</p>
+           <p className="text-xl font-black text-white leading-none">${(forecastData[forecastData.length - 1] * 1.06).toFixed(1)}M</p>
+           <p className="text-[8px] font-bold text-text-muted mt-2 uppercase tracking-widest">
+             Confidence: {Math.max(70, Math.min(99, 98.4 - Math.abs(variance) * 4)).toFixed(1)}%
+           </p>
         </motion.div>
       </div>
 
