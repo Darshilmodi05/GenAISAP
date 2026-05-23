@@ -13,49 +13,29 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { isSidebarOpen, setSidebarOpen } = useUIStore();
-  const [isMounted, setIsMounted] = React.useState(false);
   const pathname = usePathname();
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return (
-      <div className="flex h-screen bg-background overflow-hidden relative opacity-0">
-        <div className="fixed inset-0 z-0 bg-neural-mesh pointer-events-none" />
-        <div className="noise-overlay" />
-      </div>
-    );
-  }
 
   return (
     <div className="flex h-screen bg-background overflow-hidden relative">
       {/* Background Neural Particles / Mesh */}
       <div className="fixed inset-0 z-0 bg-neural-mesh pointer-events-none" />
       <div className="noise-overlay" />
-      
-      {/* Dynamic Animated Blobs */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            x: [0, 100, 0],
-            y: [0, 50, 0]
+
+      {/* Dynamic Animated Blobs — suppressHydrationWarning prevents SSR/client mismatch on motion values */}
+      <div className="fixed inset-0 z-0 pointer-events-none" suppressHydrationWarning>
+        <motion.div
+          animate={{
+            opacity: [0.4, 0.7, 0.4]
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full transform-gpu will-change-transform"
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full transform-gpu"
         />
-        <motion.div 
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            rotate: [0, -90, 0],
-            x: [0, -50, 0],
-            y: [0, 100, 0]
+        <motion.div
+          animate={{
+            opacity: [0.5, 0.8, 0.5]
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] bg-secondary/10 blur-[150px] rounded-full transform-gpu will-change-transform"
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] bg-secondary/10 blur-[150px] rounded-full transform-gpu"
         />
       </div>
 
@@ -66,10 +46,10 @@ export default function DashboardLayout({
 
         <main
           id="main-content"
-          className="flex-1 overflow-y-auto overflow-x-hidden pt-[60px] custom-scrollbar"
+          className="flex-1 overflow-y-auto overflow-x-hidden pt-[100px] custom-scrollbar"
         >
           <div className="max-w-[1600px] mx-auto px-6 py-8">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={pathname}
                 initial={{ opacity: 0, y: 8 }}
