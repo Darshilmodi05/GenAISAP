@@ -224,7 +224,7 @@ export default function LoginPage() {
            <div className="space-y-4">
              {/* Google Login (Primary) */}
              <button 
-               onClick={() => handleSubmit(onLoginSubmit)({ email: 'sso@genaisap.com', password: 'sso-auth' } as any)}
+               onClick={() => onLoginSubmit({ email: 'sso@genaisap.com', password: 'sso-auth' })}
                type="button" 
                className="w-full h-18 bg-white hover:bg-white/95 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all text-[10px] flex items-center justify-center gap-4 shadow-glow-white active:scale-[0.98]"
              >
@@ -234,7 +234,7 @@ export default function LoginPage() {
              
              {/* Microsoft Entra ID (Secondary) */}
              <button 
-               onClick={() => handleSubmit(onLoginSubmit)({ email: 'sso@genaisap.com', password: 'sso-auth' } as any)}
+               onClick={() => onLoginSubmit({ email: 'sso@genaisap.com', password: 'sso-auth' })}
                type="button" 
                className="w-full h-18 border border-white/10 bg-white/[0.02] hover:bg-white/5 text-white font-black uppercase tracking-[0.2em] rounded-2xl transition-all text-[10px] flex items-center justify-center gap-4 active:scale-[0.98]"
              >
