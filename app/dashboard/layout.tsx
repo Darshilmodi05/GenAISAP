@@ -3,9 +3,8 @@
 import * as React from 'react';
 import { Sidebar } from '@/components/layout/sidebar';
 import { Topbar } from '@/components/layout/topbar';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useUIStore } from '@/store/use-ui-store';
-import { usePathname } from 'next/navigation';
 
 export default function DashboardLayout({
   children,
@@ -13,7 +12,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { isSidebarOpen, setSidebarOpen } = useUIStore();
-  const pathname = usePathname();
 
   return (
     <div className="flex h-screen bg-background overflow-hidden relative">
@@ -49,17 +47,7 @@ export default function DashboardLayout({
           className="flex-1 overflow-y-auto overflow-x-hidden pt-[100px] custom-scrollbar"
         >
           <div className="max-w-[1600px] mx-auto px-6 py-8">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={pathname}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
-              >
-                {children}
-              </motion.div>
-            </AnimatePresence>
+            {children}
           </div>
         </main>
       </div>

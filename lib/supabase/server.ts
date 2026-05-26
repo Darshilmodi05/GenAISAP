@@ -3,8 +3,18 @@ import { cookies } from 'next/headers';
 
 // Mock authentication for development server-side
 export async function createClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const isMock = !supabaseUrl || 
+    supabaseUrl.includes('mock.supabase.co') || 
+    supabaseUrl.includes('demo.supabase.co') || 
+    supabaseUrl.includes('your-project') || 
+    supabaseUrl.includes('your_supabase');
+
+  if (isMock) {
+    return createMockClient() as any;
+  }
+
   const cookieStore = await cookies();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co';
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-key';
 
   return createServerClient(

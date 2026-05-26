@@ -37,7 +37,7 @@ export const Sidebar = () => {
   return (
     <aside
       className={cn(
-        "relative h-screen bg-surface border-r border-border transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col z-50 overflow-hidden",
+        "relative h-screen bg-surface border-r border-border transition-[width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col z-50 overflow-hidden",
         !isSidebarOpen ? "w-[100px]" : "w-[320px]"
       )}
     >

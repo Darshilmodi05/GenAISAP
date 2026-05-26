@@ -118,7 +118,14 @@ export default function LoginPage() {
     setIsLoading(true);
     setAuthError(null);
     try {
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('mock.supabase.co')) {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      const isMock = !supabaseUrl || 
+        supabaseUrl.includes('mock.supabase.co') || 
+        supabaseUrl.includes('demo.supabase.co') || 
+        supabaseUrl.includes('your-project') || 
+        supabaseUrl.includes('your_supabase');
+
+      if (isMock) {
         setIsSuccess(true);
         // Direct to MFA Page as specified in specs!
         setTimeout(() => router.push(`/verify?email=${encodeURIComponent(values.email)}`), 1200);
@@ -214,10 +221,10 @@ export default function LoginPage() {
           </div>
 
           {/* OAuth Buttons */}
-          <div className="space-y-4">
+           <div className="space-y-4">
              {/* Google Login (Primary) */}
              <button 
-               onClick={() => router.push('/dashboard/home')}
+               onClick={() => handleSubmit(onLoginSubmit)({ email: 'sso@genaisap.com', password: 'sso-auth' } as any)}
                type="button" 
                className="w-full h-18 bg-white hover:bg-white/95 text-black font-black uppercase tracking-[0.2em] rounded-2xl transition-all text-[10px] flex items-center justify-center gap-4 shadow-glow-white active:scale-[0.98]"
              >
@@ -227,7 +234,7 @@ export default function LoginPage() {
              
              {/* Microsoft Entra ID (Secondary) */}
              <button 
-               onClick={() => router.push('/dashboard/home')}
+               onClick={() => handleSubmit(onLoginSubmit)({ email: 'sso@genaisap.com', password: 'sso-auth' } as any)}
                type="button" 
                className="w-full h-18 border border-white/10 bg-white/[0.02] hover:bg-white/5 text-white font-black uppercase tracking-[0.2em] rounded-2xl transition-all text-[10px] flex items-center justify-center gap-4 active:scale-[0.98]"
              >

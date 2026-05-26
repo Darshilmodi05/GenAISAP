@@ -17,18 +17,21 @@ export const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
   const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleScroll = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && target.id === 'main-content') {
+        setIsScrolled(target.scrollTop > 20);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll, true);
   }, []);
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 h-[100px] flex items-center justify-between px-10 transition-all duration-700",
+        "absolute top-0 left-0 right-0 z-40 h-[100px] flex items-center justify-between px-10 transition-all duration-300",
         isScrolled 
           ? "bg-background/80 backdrop-blur-2xl border-b border-border shadow-md" 
           : "bg-transparent"
