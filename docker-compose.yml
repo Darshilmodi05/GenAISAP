@@ -4,7 +4,7 @@ services:
   web:
     build: 
       context: .
-      dockerfile: apps/web/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -12,22 +12,23 @@ services:
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     volumes:
-      - ./apps/web:/app/apps/web
-      - ./packages:/app/packages
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     depends_on:
       - redis
-      - ml-service
+      # - ml-service (Commented out until ML python code is added to repo)
 
-  ml-service:
-    build:
-      context: ./apps/ml-service
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    environment:
-      - PORT=8000
-    volumes:
-      - ./apps/ml-service:/app
+  # ml-service:
+  #   build:
+  #     context: ./apps/ml-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - PORT=8000
+  #   volumes:
+  #     - ./apps/ml-service:/app
 
   redis:
     image: redis:7-alpine

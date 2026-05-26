@@ -23,13 +23,13 @@ jobs:
       run: npm ci
       
     - name: Type Check
-      run: npx turbo run typecheck
+      run: npm run typecheck
       
     - name: Build Web App
-      run: npx turbo run build
+      run: npm run build
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         
     - name: Run Tests
-      run: npx turbo run test
+      run: npm run test
